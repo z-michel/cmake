@@ -1,0 +1,73 @@
+# Set the minimum version of CMake that can be used
+# To find the cmake version run
+# $ cmake --version
+cmake_minimum_required(VERSION 3.5)
+
+# Set the project name
+project (hello_cmake)
+set(PROJECT_NAME hello_cmake)
+set(GN_PREFIX ${CMAKE_CURRENT_SOURCE_DIR}/lib/gn/)
+set(GN_SAMPLE_APP_DIR ${GN_PREFIX}/examples/simple_build)
+
+# Adding multiple different source files via the add_executable command
+add_executable(${PROJECT_NAME} main.cpp hello_local.cpp ${GN_SAMPLE_APP_DIR}/hello_shared.cc zach-dir/goodbye.cc)
+
+#This adds the GN Sample App Source directory to the target includes.. Should it be PRIVATE?
+target_include_directories(${PROJECT_NAME}
+    PRIVATE 
+        ${GN_SAMPLE_APP_DIR}
+)
+
+target_include_directories(${PROJECT_NAME}
+	PRIVATE
+	${CMAKE_CURRENT_SOURCE_DIR}/zach-dir
+)
+
+
+#How to do this? Link source files from another directory ("zach-dir")
+#add_executable(hello_zach zach-dir/goodbye.cc)
+
+#target_include_directories(hello_zach
+#    PRIVATE 
+#        ${CMAKE_CURRENT_SOURCE_DIR}/zach-dir}
+#)
+
+#add_subdirectory(zach-dir)
+
+#include(ExternalProject)
+
+#set(GN_PREFIX ${CMAKE_CURRENT_SOURCE_DIR}/lib/gn/)
+
+#ExternalProject_Add(gn_externalProject
+#    SOURCE_DIR        "${CMAKE_CURRENT_SOURCE_DIR}/lib/gn/examples/simple_build/"
+#  DOWNLOAD_COMMAND URL https://gn.googlesource.com/gn ${CMAKE_CURRENT_SOURCE_DIR}/lib/gn
+#    CONFIGURE_COMMAND python ${CMAKE_CURRENT_SOURCE_DIR}/lib/gn/build/gen.py
+#      COMMAND $ENV{VAR} ninja -C ${CMAKE_CURRENT_SOURCE_DIR}/lib/gn/out
+#      COMMAND cd ${CMAKE_CURRENT_SOURCE_DIR}/lib/gn/examples/simple_build && ../../out/gn gen -C out
+#    BUILD_COMMAND cd ${CMAKE_CURRENT_SOURCE_DIR}/lib/gn/examples/simple_build && ninja -C out
+ #   BUILD_IN_SOURCE 1
+ #   INSTALL_COMMAND scp ${CMAKE_CURRENT_SOURCE_DIR}/lib/gn/examples/simple_build/out/hello #${CMAKE_CURRENT_SOURCE_DIR}
+ #   BUILD_BYPRODUCTS
+  #    {CMAKE_CURRENT_SOURCE_DIR}/lib/gn/examples/simple_build/gn.a
+#)
+
+#add_subdirectory(z)
+#add_library(gn STATIC IMPORTED)
+#add_dependencies(gn gn_externalProject)
+#set_target_properties(gn PROPERTIES IMPORTED_LOCATION {CMAKE_CURRENT_SOURCE_DIR}/lib/gn/examples/simple_build/gn.a)
+
+#include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+#link_directories(${CMAKE_CURRENT_SOURCE_DIR}/lib/gn/examples/simple_build/)
+#add_executable(hello_shared ${CMAKE_CURRENT_SOURCE_DIR}/lib/gn/examples/simple_build/hello_shared.cc)
+#add_executable(hello hello.cc)
+#target_include_directories(hello PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+#target_link_libraries(hello_shared )
+#target_link_libraries(hello)
+
+#add_dependencies(gn gn_externalProject)
+#set_target_properties(gn PROPERTIES IMPORTED_LOCATION ${DEPS_DESTDIR}/lib/gn.a)
+
+#set(EVENT_EXTRA_LIB_LOC ${LIBEVENT_PREFIX}/lib/libevent_extra.a)
+#add_library(event_extra STATIC IMPORTED GLOBAL)
+#add_dependencies(event_extra libevent_externalProject)
+#set_target_properties(event_extra PROPERTIES IMPORTED_LOCATION ${EVENT_EXTRA_LIB_LOC})

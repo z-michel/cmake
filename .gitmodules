@@ -1,0 +1,3 @@
+[submodule "01-basic/A-hello-cmake/lib/gn"]
+	path = 01-basic/A-hello-cmake/lib/gn
+	url = https://gn.googlesource.com/gn
