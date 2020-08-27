@@ -17,5 +17,20 @@ ExternalProject_Add(gn_externalProject
       COMMAND $ENV{VAR} ninja -C ${CMAKE_CURRENT_SOURCE_DIR}/lib/gn/out
       COMMAND cd ${CMAKE_CURRENT_SOURCE_DIR}/lib/gn/examples/simple_build && ../../out/gn gen -C out
     BUILD_COMMAND cd ${CMAKE_CURRENT_SOURCE_DIR}/lib/gn/examples/simple_build && ninja -C out
-    INSTALL_COMMAND :
+    BUILD_IN_SOURCE 1
+    INSTALL_COMMAND scp ${CMAKE_CURRENT_SOURCE_DIR}/lib/gn/examples/simple_build/out/hello ${CMAKE_CURRENT_SOURCE_DIR}
 )
+
+ExternalProject_Add(chip_externalProject
+    SOURCE_DIR        "${CMAKE_CURRENT_SOURCE_DIR}/lib/chip"
+    CONFIGURE_COMMAND source ${CMAKE_CURRENT_SOURCE_DIR}/lib/chip/scripts/activate.sh
+      COMMAND cd ${CMAKE_CURRENT_SOURCE_DIR}/lib/chip && gn gen out/host
+    BUILD_COMMAND cd ${CMAKE_CURRENT_SOURCE_DIR}/lib/chip && ninja -C out/host
+    BUILD_IN_SOURCE 1
+    INSTALL_COMMAND ""
+)
+
+#add_library(gn STATIC IMPORTED)
+#add_dependencies(gn gn_externalProject)
+
+#add_executable(hello)
